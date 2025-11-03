@@ -69,13 +69,13 @@ const AddUser: FC<Iprops> = ({ persons, setPersons }) => {
                             <Form autoComplete="off" className="container border rounded p-4" >
                                 <div className="row justify-content-center mb-3">Create user form</div>
                                 <div className="row">
-                                    <div className="col">
+                                    <div className="col pb-2">
                                         <label>
                                             <Field type="text" name="firstname"  placeholder="First Name" />
                                         </label>
                                         <ErrorMessage name="firstname" component="div" className="text-danger" />
                                     </div>
-                                    <div className="col">
+                                    <div className="col pb-2">
                                         <label>
                                             <Field type="text" name="lastname" placeholder="last Name" />
                                         </label>
