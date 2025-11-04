@@ -22,12 +22,14 @@ const App = () => {
     }])
   },[])
   return (
-    <div className="container">
-      <h4 className="text-center">Person list</h4>
-      <AddUser persons={person} setPersons={setPerson}/>
-      <PersonList persons={person} setPersons={setPerson} />
-      
-    </div>
+    <>
+      <h4 className="text-center p-3 m-1 mb-3 rounded" style={{backgroundColor:"#ede9e9"}}>Person list</h4>
+      <div className="container">
+        <AddUser persons={person} setPersons={setPerson}/>
+        <PersonList persons={person} setPersons={setPerson} />
+        
+      </div>
+    </>
   );
 }
 
