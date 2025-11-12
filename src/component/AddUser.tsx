@@ -1,105 +1,111 @@
-import { useState, FormEvent, Dispatch, SetStateAction, FC } from "react"
-import { Iperson } from "../App";
-import Modal from 'react-bootstrap/Modal';
-import { Formik, Field, Form, FormikHelpers,ErrorMessage } from 'formik';
+import React, { FC, Dispatch, SetStateAction } from "react";
+import { Iperson } from "../AppTypes";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
-interface Iprops {
-    persons: Iperson[];
-    setPersons: Dispatch<SetStateAction<Iperson[]>>;
+interface Props {
+  isOpen: boolean;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
+  persons: Iperson[];
+  setPersons: Dispatch<SetStateAction<Iperson[]>>;
 }
 
-interface MyFormValues {
-  firstname: string;
-  lastname: string;
-}
+const AddUser: FC<Props> = ({ isOpen, setIsOpen, persons, setPersons }) => {
+  const validationSchema = Yup.object({
+    firstName: Yup.string().required("First name is required"),
+    lastName: Yup.string().required("Last name is required"),
+  });
 
-const AddUser: FC<Iprops> = ({ persons, setPersons }) => {
+  if (!isOpen) return null;
 
-    const [isShowModal, setIsShowModal] = useState<boolean>(false);
-    const handleClose = () => {
-        setIsShowModal(false);
-    };
-    const handleShow = () => setIsShowModal(true);
-    
-    const validationSchema = Yup.object({
-        firstname: Yup.string().required(" first name is required "),
-        lastname: Yup.string().required(" last name is required ")
-    });
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div
+        className="absolute inset-0 bg-black/40 backdrop-blur-md"
+        onClick={() => setIsOpen(false)}
+      />
+      <div className="relative w-full max-w-md p-6 rounded-2xl bg-white/20 dark:bg-gray-800/40 backdrop-blur-xl shadow-lg border border-white/20 text-gray-800 dark:text-gray-100">
+        <h2 className="text-xl font-semibold text-center mb-5">Add User</h2>
+        <Formik
+          initialValues={{ firstName: "", lastName: "", image: "" }}
+          validationSchema={validationSchema}
+          onSubmit={(values) => {
+            setPersons([
+              ...persons,
+              { ...values, id: Date.now(), date: new Date() },
+            ]);
+            setIsOpen(false);
+          }}
+        >
+          {({ setFieldValue, values }) => (
+            <Form className="space-y-4" autoComplete="off">
+              <div>
+                <label className="block mb-1 font-medium">First Name</label>
+                <Field
+                  name="firstName"
+                  className="w-full rounded-xl p-3 bg-white/30 dark:bg-gray-900/40 border border-white/30 focus:ring-2 focus:ring-indigo-400"
+                />
+                <ErrorMessage name="firstName" component="div" className="text-red-500 text-sm mt-1" />
+              </div>
+              <div>
+                <label className="block mb-1 font-medium">Last Name</label>
+                <Field
+                  name="lastName"
+                  className="w-full rounded-xl p-3 bg-white/30 dark:bg-gray-900/40 border border-white/30 focus:ring-2 focus:ring-indigo-400"
+                />
+                <ErrorMessage name="lastName" component="div" className="text-red-500 text-sm mt-1" />
+              </div>
 
-    const handledSubmitForm = async (
-        values: MyFormValues,
-        { setSubmitting, resetForm }: FormikHelpers<MyFormValues>
-        ) => {
-            if(isShowModal){
-                setPersons([
-                    ...persons,
-                    {
-                        id:Math.floor(Math.random()*1000000),
-                        firstName:values.firstname,
-                        lastName:values.lastname,
-                        date:new Date(),
-                    }
-                ])
-                setIsShowModal(false)
-            }
+              <div className="flex flex-col items-center">
+                <div className="w-28 h-28 rounded-full overflow-hidden bg-white/30 dark:bg-gray-700/50">
+                  {values.image ? (
+                    <img src={values.image as string} alt="preview" className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="flex items-center justify-center h-full text-gray-400">No image</div>
+                  )}
+                </div>
+                <label
+                  htmlFor="image"
+                  className="mt-3 px-4 py-2 rounded-lg cursor-pointer bg-white/40 dark:bg-gray-700/60 hover:opacity-80 transition text-sm font-medium"
+                >
+                  Upload Image
+                </label>
+                <input
+                  id="image"
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.currentTarget.files?.[0];
+                    if (!file) return;
+                    const reader = new FileReader();
+                    reader.onload = () => setFieldValue("image", reader.result as string);
+                    reader.readAsDataURL(file);
+                  }}
+                />
+              </div>
 
-        setSubmitting(false);
-        resetForm();
-    };
-
-  
-    const initialValues: MyFormValues = { firstname: '', lastname: '' };
-    return (
-        <>
-            <button className="btn btn-secondary mb-2" onClick={handleShow}>create</button>
-            <Modal
-                show={isShowModal}
-                onHide={handleClose}
-                backdrop="static"
-                keyboard={false}
-            >
-                <Modal.Body>
-                    <Formik
-                        initialValues={initialValues}
-                        validationSchema={validationSchema}
-                        onSubmit={handledSubmitForm}
-                    >       
-                        {({ setFieldValue }) => (
-                            <Form autoComplete="off" className="container border rounded p-4" >
-                                <div className="row justify-content-center mb-3">Create user form</div>
-                                <div className="row">
-                                    <div className="col pb-2">
-                                        <label>
-                                            <Field type="text" name="firstname"  placeholder="First Name" />
-                                        </label>
-                                        <ErrorMessage name="firstname" component="div" className="text-danger" />
-                                    </div>
-                                    <div className="col pb-2">
-                                        <label>
-                                            <Field type="text" name="lastname" placeholder="last Name" />
-                                        </label>
-                                        <ErrorMessage name="lastname" component="div" className="text-danger" />
-                                    </div>
-                                </div>
-                                
-                                <div className="row">
-                                    <div className="col mt-2">
-                                        <button type="submit" className="btn btn-primary m-2">Add User</button>
-                                        <button className="btn btn-secondary" onClick={handleClose}>Close</button>
-                                    </div>
-                                </div>
-                            </Form>
-                        )}
-                            
-                        
-                    </Formik>
-                    
-                </Modal.Body>
-            </Modal>
-        </>
-        
-    )
-}
+              <div className="flex justify-end gap-3 mt-5">
+                <button
+                  type="button"
+                  onClick={() => setIsOpen(false)}
+                  className="px-4 py-2 rounded-lg bg-gray-300/40 dark:bg-gray-700/60 hover:opacity-80 transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 rounded-lg text-white bg-gradient-to-r from-indigo-500 to-pink-500 hover:opacity-90 transition"
+                >
+                  Create
+                </button>
+              </div>
+            </Form>
+          )}
+        </Formik>
+      </div>
+    </div>
+  );
+};
 
 export default AddUser;
