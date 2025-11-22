@@ -12,8 +12,8 @@ interface Props {
 
 const AddUser: FC<Props> = ({ isOpen, setIsOpen, persons, setPersons }) => {
   const validationSchema = Yup.object({
-    firstName: Yup.string().required("First name is required"),
-    lastName: Yup.string().required("Last name is required"),
+    firstName: Yup.string().required("نام الزامی است"),
+    lastName: Yup.string().required("نام خانوادگی الزامی است"),
   });
 
   if (!isOpen) return null;
@@ -25,7 +25,7 @@ const AddUser: FC<Props> = ({ isOpen, setIsOpen, persons, setPersons }) => {
         onClick={() => setIsOpen(false)}
       />
       <div className="relative w-full max-w-md p-6 rounded-2xl bg-white/20 dark:bg-gray-800/40 backdrop-blur-xl shadow-lg border border-white/20 text-gray-800 dark:text-gray-100">
-        <h2 className="text-xl font-semibold text-center mb-5">Add User</h2>
+        <h2 className="text-xl font-semibold text-center mb-5">افزودن کاربر</h2>
         <Formik
           initialValues={{ firstName: "", lastName: "", image: "" }}
           validationSchema={validationSchema}
@@ -40,7 +40,7 @@ const AddUser: FC<Props> = ({ isOpen, setIsOpen, persons, setPersons }) => {
           {({ setFieldValue, values }) => (
             <Form className="space-y-4" autoComplete="off">
               <div>
-                <label className="block mb-1 font-medium">First Name</label>
+                <label className="block mb-1 font-medium">نام</label>
                 <Field
                   name="firstName"
                   className="w-full rounded-xl p-3 bg-white/30 dark:bg-gray-900/40 border border-white/30 focus:ring-2 focus:ring-indigo-400"
@@ -48,7 +48,7 @@ const AddUser: FC<Props> = ({ isOpen, setIsOpen, persons, setPersons }) => {
                 <ErrorMessage name="firstName" component="div" className="text-red-500 text-sm mt-1" />
               </div>
               <div>
-                <label className="block mb-1 font-medium">Last Name</label>
+                <label className="block mb-1 font-medium">نام خانوادگی</label>
                 <Field
                   name="lastName"
                   className="w-full rounded-xl p-3 bg-white/30 dark:bg-gray-900/40 border border-white/30 focus:ring-2 focus:ring-indigo-400"
@@ -61,14 +61,14 @@ const AddUser: FC<Props> = ({ isOpen, setIsOpen, persons, setPersons }) => {
                   {values.image ? (
                     <img src={values.image as string} alt="preview" className="w-full h-full object-cover" />
                   ) : (
-                    <div className="flex items-center justify-center h-full text-gray-400">No image</div>
+                    <div className="flex items-center justify-center h-full text-gray-400">بدون تصویر</div>
                   )}
                 </div>
                 <label
                   htmlFor="image"
                   className="mt-3 px-4 py-2 rounded-lg cursor-pointer bg-white/40 dark:bg-gray-700/60 hover:opacity-80 transition text-sm font-medium"
                 >
-                  Upload Image
+                  بارگذاری تصویر
                 </label>
                 <input
                   id="image"
@@ -91,13 +91,13 @@ const AddUser: FC<Props> = ({ isOpen, setIsOpen, persons, setPersons }) => {
                   onClick={() => setIsOpen(false)}
                   className="px-4 py-2 rounded-lg bg-gray-300/40 dark:bg-gray-700/60 hover:opacity-80 transition"
                 >
-                  Cancel
+                  انصراف
                 </button>
                 <button
                   type="submit"
                   className="px-4 py-2 rounded-lg text-white bg-gradient-to-r from-indigo-500 to-pink-500 hover:opacity-90 transition"
                 >
-                  Create
+                  ثبت
                 </button>
               </div>
             </Form>

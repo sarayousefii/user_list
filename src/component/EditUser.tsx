@@ -12,8 +12,8 @@ interface Props {
 
 const EditUser: FC<Props> = ({ person, persons, setPersons, onClose }) => {
   const validationSchema = Yup.object({
-    firstName: Yup.string().required("First name is required"),
-    lastName: Yup.string().required("Last name is required"),
+    firstName: Yup.string().required("نام الزامی است"),
+    lastName: Yup.string().required("نام خانوادگی الزامی است"),
   });
 
   return (
@@ -23,7 +23,7 @@ const EditUser: FC<Props> = ({ person, persons, setPersons, onClose }) => {
         onClick={onClose}
       />
       <div className="relative w-full max-w-md p-6 rounded-2xl bg-white/20 dark:bg-gray-800/40 backdrop-blur-xl shadow-lg border border-white/20 text-gray-800 dark:text-gray-100">
-        <h2 className="text-xl font-semibold text-center mb-5">Edit User</h2>
+        <h2 className="text-xl font-semibold text-center mb-5">ویرایش کاربر</h2>
         <Formik
           initialValues={{
             firstName: person.firstName,
@@ -42,15 +42,16 @@ const EditUser: FC<Props> = ({ person, persons, setPersons, onClose }) => {
           {({ setFieldValue, values }) => (
             <Form className="space-y-4" autoComplete="off">
               <div>
-                <label className="block mb-1 font-medium">First Name</label>
+                <label className="block mb-1 font-medium">نام</label>
                 <Field
                   name="firstName"
                   className="w-full rounded-xl p-3 bg-white/30 dark:bg-gray-900/40 border border-white/30 focus:ring-2 focus:ring-indigo-400"
                 />
                 <ErrorMessage name="firstName" component="div" className="text-red-500 text-sm mt-1" />
               </div>
+
               <div>
-                <label className="block mb-1 font-medium">Last Name</label>
+                <label className="block mb-1 font-medium">نام خانوادگی</label>
                 <Field
                   name="lastName"
                   className="w-full rounded-xl p-3 bg-white/30 dark:bg-gray-900/40 border border-white/30 focus:ring-2 focus:ring-indigo-400"
@@ -63,15 +64,16 @@ const EditUser: FC<Props> = ({ person, persons, setPersons, onClose }) => {
                   {values.image ? (
                     <img src={values.image as string} alt="preview" className="w-full h-full object-cover" />
                   ) : (
-                    <div className="flex items-center justify-center h-full text-gray-400">No image</div>
+                    <div className="flex items-center justify-center h-full text-gray-400">بدون تصویر</div>
                   )}
                 </div>
                 <label
                   htmlFor="image"
                   className="mt-3 px-4 py-2 rounded-lg cursor-pointer bg-white/40 dark:bg-gray-700/60 hover:opacity-80 transition text-sm font-medium"
                 >
-                  Upload Image
+                  انتخاب تصویر
                 </label>
+
                 <input
                   id="image"
                   type="file"
@@ -93,13 +95,13 @@ const EditUser: FC<Props> = ({ person, persons, setPersons, onClose }) => {
                   onClick={onClose}
                   className="px-4 py-2 rounded-lg bg-gray-300/40 dark:bg-gray-700/60 hover:opacity-80 transition"
                 >
-                  Cancel
+                  انصراف
                 </button>
                 <button
                   type="submit"
                   className="px-4 py-2 rounded-lg text-white bg-gradient-to-r from-indigo-500 to-pink-500 hover:opacity-90 transition"
                 >
-                  Save
+                  ذخیره
                 </button>
               </div>
             </Form>
