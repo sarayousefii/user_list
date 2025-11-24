@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Iperson } from "../AppTypes";
 import { motion } from "framer-motion";
-
+throw new Error("CI Test Failure");
 interface Props {
   person: Iperson;
   onEdit: (person: Iperson) => void;
