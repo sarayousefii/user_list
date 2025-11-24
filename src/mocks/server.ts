@@ -8,7 +8,7 @@ const users: Iperson[] = [
 ];
 
 export const server = setupServer(
-  rest.get('/api/users', (req, res, ctx) => {
+  rest.get('/api/users', (req: any, res: (arg0: any, arg1: any) => any, ctx: { status: (arg0: number) => any; json: (arg0: Iperson[]) => any; }) => {
     return res(ctx.status(200), ctx.json(users));
   })
 );
